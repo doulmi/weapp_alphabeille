@@ -1,0 +1,21 @@
+
+<!--index.wxml-->
+<scroll-view scroll-y="true" class="container discovery withtab" bindscrolltoupper="reloadVideos" bindscrolltolower="loadMoreVideos">
+  <view>
+    <swiper class="activity" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+      <block wx:for="{{imgUrls}}" wx:for-index="idx" wx:key="{{idx}}">
+        <swiper-item>
+          <image src="{{item}}" class="slide-image" width="355" height="155" />
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+
+  <view>
+  	<block wx:for="{{videos}}" wx:for-index="idx" wx:key="{{idx}}">
+  		<navigator url="../video/video?id={{item.youtubeId}}">
+	  		<image src="{{item.avatar}}" class="video-avatar"/>
+  		</navigator>
+  	</block>
+  </view>
+</scroll-view>

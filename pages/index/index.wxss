@@ -1,0 +1,14 @@
+/**index.wxss**/
+.activity{
+  width: 750rpx;
+  height: 375rpx;
+}
+
+.activity image{
+  width: 750rpx;
+  height: 375rpx;
+}
+
+.container{
+  height: 1500rpx;
+}
