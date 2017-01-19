@@ -1,3 +1,55 @@
-<view>
-    {{video.title}}
+<import src="../../wxParse/wxParse.wxml"/>
+
+<block wx:if="{{showLoading}}">
+  <view class="page-loading">
+    <text class="weui-loading"/><text class="loading-text">玩命加载中</text>
+  </view>
+</block>
+
+<view class="container">
+  <text class="video-title">{{video.title}}</text>
+
+  <view>
+    <video src="{{video.video_url}}" controls class="video-player"></video>
+  </view>
+
+  <view class="tab">
+    <view class="tab-item flex-item {{currentNavtab==index ? 'active' : ''}}" wx:for="{{navTab}}" wx:key="{{index}}"
+          data-idx="{{index}}" bindtap="switchTab">
+      {{item}}
+    </view>
+  </view>
+
+  <view class="ctnt1 placehold" hidden="{{currentNavtab==0 ? '' : true}}">
+    <scroll-view scroll-y="true" class="">
+      <block wx:for="{{frs}}" wx:key="{{index}}">
+        <view class="video-sub" bindtap="showDict">
+          <template is="wxParse" data="{{wxParseData:item}}"/>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+  <view class="ctnt2 placehold" hidden="{{currentNavtab==1 ? '' : true}}">
+    <text>讲解</text>
+  </view>
+  <view class="ctnt3 placehold" hidden="{{currentNavtab==2 ? '' : true}}">
+    <text>评论</text>
+  </view>
+</view>
+
+<view class="grid-center" hidden="{{isLoading ? '' : 'true'}}">
+  <view class="weui-loading"></view>
+</view>
+
+<view class="load-more-wrap">
+  <block wx:if="{{hasMore}}">
+    <view class="load-content">
+      <text class="weui-loading"/><text class="loading-text">玩命加载中</text>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="load-content">
+      <text>没有更多内容了</text>
+    </view>
+  </block>
 </view>
