@@ -39,7 +39,7 @@
     <view class="wxParse-inline">
       <block wx:for="{{item.textArray}}" wx:for-index="idx" wx:key="{{idx}}">
         <block class="{{item.text == '\\n' ? 'wxParse-hide':''}}" wx:if="{{item.node == 'text'}}">
-          <text data->{{item.text}}</text>
+          <view bindtap="showDict" data-word="{{item.text}}" class="wxParse-inline">{{item.text}}</view>
         </block>
       </block>
     </view>

@@ -1,23 +1,22 @@
 //index.js
-
 import videosAPI from '../../api/videos.js'
+import carouselsAPI from '../../api/carousels.js'
 
 //获取应用实例
 const app = getApp()
 
 Page({
   data: {
+    hasMore: true,
+    initLoading: true,
+    reloading: false,
     autoplay: true,
     duration: 1000,
     interval: 5000,
     indicatorDots: true,
     videos : [],
     pages : 1,
-    imgUrls: [
-      '../../images/swiper-1.jpg',
-      '../../images/swiper-2.jpg',
-      '../../images/swiper-3.jpg',
-    ]
+    imgUrls: []
   },
 
   //事件处理函数
@@ -30,30 +29,42 @@ Page({
 
   onLoad() {
     this.refresh();
+    this.initCarousel();
+  },
+
+  initCarousel() {
+    this.setData({
+      imgUrls: carouselsAPI.loadCarousels()
+    });
   },
 
   reloadVideos() {
-    wx.showNavigationBarLoading()
-    setTimeout(function () { wx.hideNavigationBarLoading(); wx.stopPullDownRefresh(); this.refresh(); }, 2000);
-    console.log('loadVideos');
+    this.setData({ reloading: true});
+    const that = this;
+    setTimeout(function () { that.refresh(); }, 2000);
   },
 
   loadMoreVideos() {
-    wx.showNavigationBarLoading();
     let that = this;
-    setTimeout(function () { wx.hideNavigationBarLoading();  
+    setTimeout(() => {
       that.setData({
         videos: [...that.data.videos, ...videosAPI.loadVideos(that.data.page, 10).data],
         page: that.data.page ++
       })
     }, 1000);
-    console.log("loadMoreVideos")
+
   },
 
   refresh() {
     this.setData({
       videos: videosAPI.loadVideos(1, 10).data,
-      page: 1
-    }); 
+      page: 1,
+      initLoading: false,
+      reloading: false,
+    });
+  },
+
+  onPullDownRefresh: function () {
+    console.log('onPullDownRefresh', new Date())
   },
 })

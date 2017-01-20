@@ -1,6 +1,13 @@
 
 <!--index.wxml-->
-<scroll-view scroll-y="true" class="container discovery withtab" bindscrolltoupper="reloadVideos" bindscrolltolower="loadMoreVideos">
+<block wx:if="{{initLoading}}">
+  <view class="page-loading">
+    <text class="weui-loading" />
+  </view>
+</block>
+
+<!--<scroll-view scroll-y="true" class="container discovery withtab" bindscrolltolower="loadMoreVideos">-->
+  <scroll-view scroll-y="true" class="container discovery withtab" bindscrolltolower="loadMoreVideos" bindscrolltoupper="reloadVideos">
   <view>
     <swiper class="activity" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
       <block wx:for="{{imgUrls}}" wx:for-index="idx" wx:key="{{idx}}">
@@ -10,12 +17,39 @@
       </block>
     </swiper>
   </view>
-
-  <view>
-  	<block wx:for="{{videos}}" wx:for-index="idx" wx:key="{{idx}}">
-  		<navigator url="../video/video?id={{item.youtubeId}}">
-	  		<image src="{{item.avatar}}" class="video-avatar"/>
-  		</navigator>
-  	</block>
+  <view class="video-item">
+    <view class="load-content load-more-wrap" wx:if="{{reloading}}">
+      <text class="weui-loading" />
+      <text>刷新中...</text>
+    </view>
+    <block wx:for="{{videos}}" wx:for-index="idx" wx:key="{{idx}}">
+      <navigator url="../video/video?id={{item.youtubeId}}" class="row">
+        <view class="col-3">
+          <image src="{{item.avatar}}" class="video-avatar" />
+        </view>
+        <view class="col-6">
+          <view class="video-title-div">
+            <text class="video-title">{{item.title}}</text>
+          </view>
+          <view>
+            <text class="level-label {{item.level}}">{{item.level}}</text>
+            <text class="duration">{{item.duration}}</text>
+          </view>
+        </view>
+      </navigator>
+    </block>
+  </view>
+  
+  <view class="load-more-wrap">
+    <block wx:if="{{hasMore}}">
+      <view class="load-content">
+        <text class="weui-loading" />
+      </view>
+    </block>
+    <block wx:else>
+      <view class="load-content">
+        <text>没有更多内容了</text>
+      </view>
+    </block>
   </view>
 </scroll-view>

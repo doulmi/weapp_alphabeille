@@ -7,6 +7,7 @@ Page({
   data: {
     video: {},
     navTab: ["字幕", "讲解", "评论"],
+    points: [],
     currentNavtab: "0",
     isLoading: true,
   },
@@ -24,10 +25,12 @@ Page({
     // WxParse.wxParse('frs[' + key + ']', 'html', this.data.test, this);
     this.setData({
       video: v,
+      points: v.points.split(',')
     })
   },
 
   onReady() {
+    this.videoContext = wx.createVideoContext('mainVideo')
   },
 
   switchTab(e){
@@ -37,6 +40,13 @@ Page({
   },
 
   showDict(e) {
-   console.log('clicked', e.currentTarget);
+   console.log(e.currentTarget.dataset.word);
+  },
+
+  seekTo(e) {
+    const to = e.currentTarget.dataset.to;
+    console.log(e.currentTarget, to);
+    //this.videoContext.pause();
+    this.videoContext.seek(to);
   }
 })
