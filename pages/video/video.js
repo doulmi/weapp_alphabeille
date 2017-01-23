@@ -14,6 +14,8 @@ Page({
 
   onLoad(options) {
     const v = videoAPI.loadVideoById(options.id);
+
+    //将单词化后的字幕通过html形式展示
     const frsArray = v.parsed_content.split('||');
     const length = frsArray.length;
     for (let i = 0; i < length; i++) {
@@ -22,31 +24,48 @@ Page({
         WxParse.wxParseTemArray("frs", 'fr', length, this)
       }
     }
-    // WxParse.wxParse('frs[' + key + ']', 'html', this.data.test, this);
     this.setData({
       video: v,
       points: v.points.split(',')
     })
+
+    wx.setNavigationBarTitle({
+      title: v.title,
+    })
   },
 
+  /**
+   * 页面加载完成时获取video
+   */
   onReady() {
     this.videoContext = wx.createVideoContext('mainVideo')
   },
 
+  /**
+   * 切换tab
+   * @param e
+   */
   switchTab(e){
     this.setData({
       currentNavtab: e.currentTarget.dataset.idx
     });
   },
 
+  /**
+   * 查询该单词的解释，并显示结果
+   * @param e
+   */
   showDict(e) {
    console.log(e.currentTarget.dataset.word);
   },
 
+  /**
+   * 跳转视频播放进度到e.to
+   * @param e
+   */
   seekTo(e) {
     const to = e.currentTarget.dataset.to;
     console.log(e.currentTarget, to);
-    //this.videoContext.pause();
     this.videoContext.seek(to);
   }
 })

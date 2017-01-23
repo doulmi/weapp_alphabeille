@@ -1,26 +1,23 @@
 <import src="../../wxParse/wxParse.wxml"/>
 
-
-<view class="container">
-  <text class="video-title">{{video.title}}</text>
-
-  <view>
-    <video id="mainVideo" src="{{video.video_url}}" controls class="video-player" autoplay="true"></video>
-  </view>
-
-  <view class="tab">
-    <view class="tab-item flex-item {{currentNavtab==index ? 'active' : ''}}" wx:for="{{navTab}}" wx:key="{{index}}" bindtap="switchTab"
-          data-idx="{{index}}" >
-      {{item}}
+<view class="main-container">
+  <view class="video-player-container">
+    <video id="mainVideo" src="{{video.video_url}}" controls autoplay="true" class="video-player"></video>
+    <view class="tab">
+      <view class="tab-item flex-item {{currentNavtab==index ? 'active' : ''}}" wx:for="{{navTab}}" wx:key="{{index}}"
+            bindtap="switchTab"
+            data-idx="{{index}}">
+        {{item}}
+      </view>
     </view>
   </view>
 
-  <view class="ctnt1 placehold" hidden="{{currentNavtab==0 ? '' : true}}">
-    <scroll-view scroll-y="true" class="">
+  <view class="sub-scroll" hidden="{{currentNavtab==0 ? '' : true}}">
+    <scroll-view scroll-y="true">
       <block wx:for="{{frs}}" wx:key="{{index}}">
         <view class="video-sub">
           <view bindtap="seekTo" data-to="{{points[index]}}" class="play-btn {{currentIndex ? 'active' : ''}} inline"></view>
-          <template is="wxParse" data="{{wxParseData:item}}"/>
+          <view class="inline sub" > <template is="wxParse" data="{{wxParseData:item}}"/> </view>
         </view>
       </block>
     </scroll-view>
