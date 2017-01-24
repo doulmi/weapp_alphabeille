@@ -1,4 +1,5 @@
 import videoAPI from '../../api/video.js'
+import wordAPI from '../../api/word.js'
 import WxParse from '../../wxParse/wxParse.js'
 
 //获取应用实例
@@ -10,6 +11,14 @@ Page({
     points: [],
     currentNavtab: "0",
     isLoading: true,
+
+    //dict
+    show: false,
+    word: '',
+    prononce: '',
+    action: {
+      method: ''
+    }
   },
 
   onLoad(options) {
@@ -56,7 +65,20 @@ Page({
    * @param e
    */
   showDict(e) {
-   console.log(e.currentTarget.dataset.word);
+    const w = e.currentTarget.dataset.word;
+    this.setData({
+      show: true,
+      word: w,
+    });
+
+    WxParse.wxParse('explication', 'html', '加载中...', this);
+
+    const result = wordAPI.loadWord(w);
+    this.setData({
+      prononce: result.audio
+    });
+    console.log(result.msg);
+    WxParse.wxParse('explication', 'html', result.msg, this);
   },
 
   /**
@@ -67,5 +89,18 @@ Page({
     const to = e.currentTarget.dataset.to;
     console.log(e.currentTarget, to);
     this.videoContext.seek(to);
-  }
+  },
+
+  /**
+   * Play prononce audio
+   */
+  playAudio() {
+    this.setData({
+      action: {
+        method: 'play'
+      }
+    })
+  },
+
+
 })

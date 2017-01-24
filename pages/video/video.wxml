@@ -16,8 +16,11 @@
     <scroll-view scroll-y="true">
       <block wx:for="{{frs}}" wx:key="{{index}}">
         <view class="video-sub">
-          <view bindtap="seekTo" data-to="{{points[index]}}" class="play-btn {{currentIndex ? 'active' : ''}} inline"></view>
-          <view class="inline sub" > <template is="wxParse" data="{{wxParseData:item}}"/> </view>
+          <view bindtap="seekTo" data-to="{{points[index]}}"
+                class="play-btn {{currentIndex ? 'active' : ''}} inline"></view>
+          <view class="inline sub">
+            <template is="wxParse" data="{{wxParseData:item}}"/>
+          </view>
         </view>
       </block>
     </scroll-view>
@@ -27,5 +30,19 @@
   </view>
   <view class="ctnt3 placehold" hidden="{{currentNavtab==2 ? '' : true}}">
     <text>评论</text>
+  </view>
+
+  <view hidden="{{!show}}">
+    <view class="dict-header">
+      {{word}}
+      <button bindtap="playAudio" class="audio-btn" v-if="{{prononce != ''}}"></button>
+      <button bindtap="closeDict" class="close-btn"></button>
+    </view>
+
+    <view class="dict-body">
+      <template is="wxParse" data="{{wxParseData:explication.nodes}}"/>
+    </view>
+
+    <audio src='{{prononce}}' action="{{action}}"/>
   </view>
 </view>
