@@ -9,6 +9,7 @@ Page({
     video: {},
     navTab: ["字幕", "讲解", "评论"],
     points: [],
+    zhs: [],
     currentNavtab: "0",
     isLoading: true,
 
@@ -35,8 +36,9 @@ Page({
     }
     this.setData({
       video: v,
-      points: v.points.split(',')
-    })
+      points: v.points.split(','),
+      zhs: v.parsed_content_zh.split('||')
+    });
 
     wx.setNavigationBarTitle({
       title: v.title,
@@ -48,6 +50,7 @@ Page({
    */
   onReady() {
     this.videoContext = wx.createVideoContext('mainVideo')
+    WxParse.wxParse('description', 'html', this.data.video.parsed_desc, this);
   },
 
   /**
@@ -77,7 +80,6 @@ Page({
     this.setData({
       prononce: result.audio
     });
-    console.log(result.msg);
     WxParse.wxParse('explication', 'html', result.msg, this);
   },
 
@@ -87,7 +89,6 @@ Page({
    */
   seekTo(e) {
     const to = e.currentTarget.dataset.to;
-    console.log(e.currentTarget, to);
     this.videoContext.seek(to);
   },
 
@@ -101,6 +102,4 @@ Page({
       }
     })
   },
-
-
 })
